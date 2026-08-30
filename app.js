@@ -9,7 +9,7 @@ async function searchMember(){
 
     let csv = await response.text();
 
-    let rows = csv.split(/\r?\n(?=C\d+)/);
+    let rows = csv.split(/\r?\n(?=LS)/);
 
     let member = null;
 
