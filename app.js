@@ -33,7 +33,7 @@ async function searchMember(){
 
         客户：${member[1]}<br>
 
-        编号：${member[0]}<br>
+        手机号：${member[0]}<br>
 
         套餐：${member[2]}<br><br>
 
