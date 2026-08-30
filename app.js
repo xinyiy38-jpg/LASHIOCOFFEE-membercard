@@ -46,8 +46,7 @@ async function searchMember(){
 
         <h3>消费记录</h3>
 
-       ${member[4].replace(/\|/g,"<br><br>")}
-
+      ${member[4].replace(/["|]/g,"<br>")}
         `;
 
     }else{
