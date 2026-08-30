@@ -1,49 +1,60 @@
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTQKpI45beMdEW3UKVQR2CMu-FLwa8GLp0dLvpe4s_lQmsXOppRRIQ51FyMNWerJjxhkLRlduk5RgA6/pub?output=csv";
 
-// 后期替换成Google Sheet API地址即可
-const members = {
-"C001028":{
-name:"王小姐",
-package:"10杯充值卡",
-used:3,
-records:[
-"2026-08-30 14:30 购买1杯",
-"2026-08-28 10:20 购买1杯",
-"2026-08-25 16:40 购买1杯"
-]
-},
-"C001029":{
-name:"李先生",
-package:"10杯充值卡",
-used:5,
-records:[
-"2026-08-30 15:00 购买1杯"
-]
-}
-};
 
-function searchMember(){
-let id=document.getElementById("id").value.trim();
-let m=members[id];
+async function searchMember(){
 
-if(!m){
-document.getElementById("result").innerHTML="未找到会员编号";
-return;
-}
+    let id = document.getElementById("id").value.trim();
 
-let history=m.records.map(x=>"<p>"+x+"</p>").join("");
+    let response = await fetch(sheetURL);
 
-document.getElementById("result").innerHTML=
-`
-客户：${m.name}<br>
-编号：${id}<br>
-套餐：${m.package}<br><br>
+    let csv = await response.text();
 
-<b>已消费：${m.used}/10杯</b><br>
-还差：${10-m.used}杯领取赠杯
+    let rows = csv.split("\n");
 
-<hr>
+    let member = null;
 
-<h3>消费记录</h3>
-${history}
-`;
+
+    rows.forEach(row=>{
+
+        let data = row.split(",");
+
+        if(data[0] == id){
+
+            member = data;
+
+        }
+
+    });
+
+
+    if(member){
+
+        document.getElementById("result").innerHTML = `
+
+        客户：${member[1]}<br>
+
+        编号：${member[0]}<br>
+
+        套餐：${member[2]}<br><br>
+
+
+        <b>已消费：${member[3]}/10杯</b><br>
+
+        还差：${10-member[3]}杯获得赠杯
+
+        <hr>
+
+        <h3>消费记录</h3>
+
+        ${member[4]}
+
+        `;
+
+    }else{
+
+        document.getElementById("result").innerHTML =
+        "未找到会员编号";
+
+    }
+
 }
