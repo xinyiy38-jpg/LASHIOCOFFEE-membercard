@@ -9,7 +9,7 @@ async function searchMember(){
 
     let csv = await response.text();
 
-    let rows = csv.split("\n");
+    let rows = csv.split(/\r?\n(?=C\d+)/);
 
     let member = null;
 
@@ -46,7 +46,7 @@ async function searchMember(){
 
         <h3>消费记录</h3>
 
-        ${member[4]}
+        ${member[4].replace(/\|/g,"<br>")}
 
         `;
 
